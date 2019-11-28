@@ -8,7 +8,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 @app.route('/')
 def home():
 	if 'usertype' not in session:
-		# print("user_type:", session['user_type'])
+		print("usertype not in session. Current Session: ", session)
 		return redirect(url_for('login'))
 
 	function_screens = {
@@ -38,8 +38,21 @@ def login():
 		if user_data_response:
 			user_data = {k: v for d in user_data_response for k, v in d.items()}
 			print("Successfuly Signed in with user data:", user_data)
-			session['usertype'] = user_data['usertype']
 			session['user_data'] = user_data
+
+			if 'Employee' in user_data['usertype']:
+				redefined_userType = ''
+				if user_data['usertype'] == "Employee":
+					employeeType = auth.get_typeEmployee(username)
+					redefined_userType = employeeType['employeetype'] + " Only"
+				else:
+					employeeType = auth.get_typeEmployee(username)
+					print("employeeType:", employeeType)
+					redefined_userType = employeeType['employeetype'] + "-Customer"
+				session['usertype'] = redefined_userType
+			else: # usertype is "User" or "Customer"
+				session['usertype'] = user_data['usertype']
+
 			return redirect(url_for('home'))
 		else:
 			flash("Invalid email or password")
@@ -70,13 +83,12 @@ def register():
 @app.route('/register_forwarding', methods=['POST'])
 def handle_registration():
 	print(request.form)
-	user_type = request.form.get("registration_type")
-	print(request.form.get("registration_type"))
+	reg_type = request.form.get("registration_type") #type of registration
+	print("registration type:", request.form.get("registration_type"))
 
-
-	print("Credit Cards:", request.form.getlist("creditcard"))
-
-	reg_types = {'User': 'regs/user_registration.html'}
+	reg_types = {'User': 'regs/user_registration.html',
+				 'Customer': 'regs/customer_only_registration.html',
+				 "Manager Only": 'regs/manager_only_registration.html'}
 
 	first_name = request.form.get("first_name")
 	last_name = request.form.get("last_name")
@@ -87,13 +99,46 @@ def handle_registration():
 	password_confirm = request.form.get('password_confirm')
 	if password != password_confirm:
 		flash("Entered passwords do not match")
-		return render_template(reg_types[user_type], session=session)
+		return render_template(reg_types[reg_type], session=session)
 
-	# TODO: Run SQL Query to register user
+	if reg_type == "User":
+		status = "Pending"
+		if auth.createNewUser(username, first_name, last_name, password, reg_type, status):
+			print("User created!")
+	elif reg_type == "Customer":
+		status = "Pending"
+		creditCards = request.form.getlist("creditcard")
+		if auth.createNewCustomer(username, first_name, last_name, password, reg_type, status, creditCards):
+			print("Customer created!")
+	elif reg_type == "Manager Only":
+		usertype = "Employee"
+		status = "Approved"
+		company = request.form.get("company")
+		address_street = request.form.get("address_street")
+		address_city = request.form.get("address_city")
+		address_state = request.form.get("address_state")
+		address_zip = request.form.get("address_zip")
 
+		if auth.createNewManager(username, first_name, last_name, password, usertype, status, company,
+			 address_street, address_city, address_state, address_zip, theaterName="NULL"):
+			print("Manager created!")
+	else:
+		usertype = "Employee, Customer"
+		status = "Approved"
+		company = request.form.get("company")
+		address_street = request.form.get("address_street")
+		address_city = request.form.get("address_city")
+		address_state = request.form.get("address_state")
+		address_zip = request.form.get("address_zip")
+
+		creditCards = request.form.getlist("creditcard")
+
+		if auth.createNewManagerCustomer(username, first_name, last_name, password, usertype, status, company, address_street,
+		address_city, address_state, address_zip, creditCards, theaterName="NULL"):
+			print("Manager-Customer created!")
 
 	# after registration works
-	session['user_type'] = user_type
+	session['usertype'] = reg_type
 
 	return redirect(url_for('home'))
 
