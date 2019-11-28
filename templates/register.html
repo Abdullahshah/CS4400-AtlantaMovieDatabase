@@ -1,0 +1,25 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+<div class="col-md-4 offset-md-4">
+
+    <h1>Register</h1>
+    <p>Welcome! Please choose a type of registration.</p>
+
+    <form action="{{ url_for('register') }}" method="post" name="registrationType">
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="user_only" value="User Only"/>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="customer_only" value="Customer Only"/>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="manager_only" value="Manager Only"/>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="manager_customer" value="Manager-Customer"/>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

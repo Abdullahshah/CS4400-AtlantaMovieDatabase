@@ -1,0 +1,146 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+<h1>Create an account</h1>
+<p>Welcome!  We need some information in order to create your account.</p>
+<form action="{{ url_for('handle_registration') }}" name="manager_only_registration_form" method="post">
+
+    <input type="hidden" name="registration_type" value="Manager Only" class="form-control" required />
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Signing in</h3>
+            <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" name="username" id="username" class="form-control" placeholder="" required />
+                </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" id="password" pattern=".{8,}" title="Password must have atleast 8 characters" required />
+            </div>
+            <div class="form-group">
+                <label for="password-confirm">Confirm password</label>
+                <input type="password" name="password_confirm" class="form-control" id="password-confirm" pattern=".{8,}" title="Password must have atleast 8 characters" required />
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <h3>About you</h3>
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="first_name">First Name</label>
+                  <input type="text" name="first_name" id="first_name" class="form-control" placeholder="" required />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="last_name">Last Name</label>
+                  <input type="text" name="last_name" id="last_name" class="form-control" placeholder="" required />
+                </div>
+            </div>
+
+             <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="company">Company</label>
+                  <select name="company" required="">
+                    <option value="4400 Theater Company">4400 Theater Company
+                    <option value="AI Theater Company">AI Theater Company</option>
+                    <option value="Awesome Theater Company">Awesome Theater Company</option>
+                    <option value="EZ Theater Company">EZ Theater Company</option>
+                  </select>
+<!--                   <input type="submit" name="company" id="compnay" class="form-control" placeholder="" required />
+ -->                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4> Address </h4>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="street">Street</label>
+                    <input type="text" name="address_street" id="street" class="form-control" required />
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="state">State</label>
+                    <select name="state" required>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District Of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>           
+<!--                     <input type="text" name="address_state" id="state" class="form-control" required />
+ -->                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="city">City</label>
+                    <input type="text" name="address_city" id="city" class="form-control" required />
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="zip">ZIP Code</label>
+                    <input type="text" name="address_zip" id="zip" maxlength="5" class="form-control" pattern=".{5,5}" title="ZIP Code must have 5 characters" required />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <input class="btn btn-primary" type="submit" />
+    </div>
+</form>
+{% endblock %}

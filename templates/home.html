@@ -1,0 +1,51 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+
+<!-- <h1>User Functionality</h1>
+
+<div class="col-md-4 offset-md-4">
+	<div class="functions">
+		<a class="btn btn-sm btn-outline-primary" href="{{ url_for('home') }}">Explore Theater</a>
+		<br>
+		<a class="btn btn-sm btn-outline-primary" href="{{ url_for('home') }}">Visit History</a>
+		<br>
+		<a class="btn btn-sm btn-outline-primary" href="{{ url_for('logout') }}">Sign Out</a>
+	</div>
+</div>
+ -->
+
+
+<!-- <div class="col-md-8 offset-md-4">
+    <h1>User Functionality</h1>
+    <p>Welcome! Please choose a Function.</p>
+
+    <form action="{{ url_for('register') }}" method="post" name="userFunctionalityForm">
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="Explore Theater" value="Explore Theater"/>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="Visit History" value="Visit History"/>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="Sign Out" value="Sign Out"/>
+        </div>
+    </form>
+</div> -->
+
+<div class="col-md-8 offset-md-1">
+    <h1>{{ userType }} Functionality</h1>
+    <p>Welcome! Please choose a Function.</p>
+
+    <form action="{{ url_for('handle_functionality') }}" method="post" name="functionalityForm">
+    	{% for funcgroup in functions | batch(2) %}
+        <div class="form-group">
+        	{% for func in funcgroup %}
+            <input class="btn btn-primary" type="submit" name="function" value="{{ func }}"/>
+        	{% endfor %}
+        </div>
+        {% endfor %}
+    </form>
+</div>
+
+{% endblock %}
