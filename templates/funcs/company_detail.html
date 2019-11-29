@@ -1,0 +1,42 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col-md-12">
+		<h1> Company Detail </h1>
+    <h4> Name: {{ company }} </h4>
+    <h4> Employees: {{ managerNames }}</h4>
+	</div>
+</div>
+
+<br>
+
+<div class="row">
+	<table class="table" id="myTable">
+	    <thead>
+	        <tr>
+	            <th>Name</th>
+	            <th>Manager</th>
+	            <th>City</th>
+	            <th>State</th>
+              <th>Capacity</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	{% for theater in theaterData %}
+	        <tr>
+	            <td>{{ theater.name }} </td>
+	            <td>{{ theater.manager }}</td>
+	            <td>{{ theater.city }}</td>
+	            <td>{{ theater.state }}</td>
+              <td>{{ theater.capacity }}</td>
+	        </tr>
+	        {% endfor %}
+	    </tbody>
+	</table>
+</div>
+
+
+{% endblock %}

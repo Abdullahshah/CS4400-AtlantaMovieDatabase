@@ -230,9 +230,96 @@ def manageUser():
 	return render_template("funcs/manage_user.html", manageUserData=manageUserData)
 
 
-@app.route('/admin/managecompany', methods=['GET'])
+@app.route('/admin/managecompany', methods=['POST', 'GET'])
 def manageCompany():
-	return redirect(url_for('home'))
+	
+	companyNames = view.getCompanyNames()
+
+	if request.method == "POST":
+
+		print(request.form)
+
+		if request.form.get("createTheaterButton"):
+			print("createTheaterButton", "pressed")
+
+		if request.form.get("companyDetailButton"):
+			companyChoice = request.form.get("companyChoice")
+			if companyChoice:
+				print("companyDetailButton", "pressed")
+				managerNames = ''
+				managerNameData = view.getManagersforCompany(companyChoice)
+				for manager in managerNameData:
+					managerNames += manager['firstname'] + ' ' + manager['lastname'] + ', '
+				managerNames = managerNames[:-2]
+
+				theaterData = []
+				theaterQueryData = view.getWorkingManagersforCompany(companyChoice)
+				for theater in theaterQueryData:
+					theaterDict = {}
+					theaterDict['name'] = theater['thname']
+					theaterDict['manager'] = theater['firstname'] + ' ' + theater['lastname']
+					theaterDict['city'] = theater['thcity']
+					theaterDict['state'] = theater['thstate']
+					theaterDict['capacity'] = theater['capacity']
+					theaterData.append(theaterDict)
+				print(theaterData)
+
+				return render_template("funcs/company_detail.html", company=companyChoice,
+						managerNames=managerNames, theaterData=theaterData)
+
+
+		cityMin = request.form.get("CityCoveredMin")
+		cityMax = request.form.get("CityCoveredMax")
+		theaterMin = request.form.get("NumTheatersMin")
+		theaterMax = request.form.get("NumTheatersMax")
+		employeeMin = request.form.get("NumEmployeesMin")
+		employeeMax = request.form.get("NumEmployeesMax")
+
+		queryData = view.manageCompanyGET()
+		companyData = []
+
+		for company in queryData:
+
+			if cityMin != '' and int(cityMin) > company['numCities']:
+				continue
+			if cityMax != '' and int(cityMax) < company['numCities']:
+				continue
+			if theaterMin != '' and int(theaterMin) > company['numTheaters']:
+				continue
+			if theaterMax != '' and int(theaterMax) < company['numTheaters']:
+				continue
+			if employeeMin != '' and int(employeeMin) > company['numEmployees']:
+				continue
+			if employeeMax != '' and int(employeeMax) < company['numEmployees']:
+				continue			
+
+			companyDict = {}
+			companyDict['name'] = company['comname']
+			companyDict['numCities'] = company['numCities']
+			companyDict['numTheaters'] = company['numTheaters']
+			companyDict['numEmployees'] = company['numEmployees']
+			companyData.append(companyDict)
+		
+
+		return render_template("funcs/manage_company.html", companyNames=companyNames,
+				companyData=companyData)
+
+
+	if request.method == "GET":
+		queryData = view.manageCompanyGET()
+		companyData = []
+
+		for company in queryData:
+			companyDict = {}
+			companyDict['name'] = company['comname']
+			companyDict['numCities'] = company['numCities']
+			companyDict['numTheaters'] = company['numTheaters']
+			companyDict['numEmployees'] = company['numEmployees']
+			companyData.append(companyDict)
+		
+
+		return render_template("funcs/manage_company.html", companyNames=companyNames,
+				companyData=companyData)
 
 	'''
 	inside Manage Company screen is:
@@ -240,18 +327,22 @@ def manageCompany():
 		-> Company Detail -> methods=['GET']
 	'''
 
+
 @app.route('/admin/managecompany/createtheater', methods=['POST', 'GET'])
 def createTheater():
 	return redirect(url_for('home'))
 
 
-@app.route('/admin/managecompany/companydetail', methods=['GET'])
-def companyDetail():
-	return redirect(url_for('home'))
-
 @app.route('/admin/createmovie', methods=['POST', 'GET'])
 def createMovie():
-	return redirect(url_for('home'))
+
+	if request.method == "POST":
+		#run query to check if movie already exists
+		# if it does, flash screen with error
+		# if not, add to db and go to home page
+		print(request.form)
+
+	return render_template("funcs/create_movie.html")
 
 
 @app.route('/manager/theateroverview', methods=['GET'])

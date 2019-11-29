@@ -1,3 +1,5 @@
+#Insert Table Statements:
+
 USE `team70`;
 #USERS
 
@@ -12,7 +14,7 @@ INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`st
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('entropyRox','Claude','Shannon',MD5('999999999'),'Employee, Customer','Approved');
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('fatherAI','Alan','Turing',MD5('222222222'),'Employee','Approved');
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('fullMetal','Edward','Elric',MD5('111111100'),'Customer','Approved');
-INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('gdanger','Gary','Danger',MD5('555555555)','User','Declined');
+INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('gdanger','Gary','Danger',MD5('555555555'),'User','Declined');
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('georgep','George P.','Burdell',MD5('111111111'),'Employee, Customer','Approved');
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('ghcghc','Grace','Hopper',MD5('666666666'),'Employee','Approved');
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('ilikemoney$$','Eugene','Krabs',MD5('111111110'),'Customer','Approved');
@@ -31,6 +33,8 @@ INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`st
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('texasStarKarate','Sandy','Cheeks',MD5('111111110'),'User','Declined');
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('thePiGuy3.14','Archimedes','Syracuse',MD5('1111111111'),'Customer','Approved');
 INSERT INTO `users` (`username`,`firstname`,`lastname`,`password`,`usertype`,`status`) VALUES ('theScienceGuy','Bill','Nye',MD5('999999999'),'Customer','Approved');
+
+
 
 
 #COMPANY
@@ -155,5 +159,4 @@ INSERT INTO `customerviewmovie` (`movname`,`movreleasedate`,`movplaydate`,`thnam
 INSERT INTO `customerviewmovie` (`movname`,`movreleasedate`,`movplaydate`,`thname`,`comname`,`creditcardnum`) VALUES ('How to Train Your Dragon','2010-03-21','2010-03-23','Main Movies','EZ Theater Company',1111111111111111);
 INSERT INTO `customerviewmovie` (`movname`,`movreleasedate`,`movplaydate`,`thname`,`comname`,`creditcardnum`) VALUES ('How to Train Your Dragon','2010-03-21','2010-03-25','Star Movies','EZ Theater Company',1111111111111100);
 INSERT INTO `customerviewmovie` (`movname`,`movreleasedate`,`movplaydate`,`thname`,`comname`,`creditcardnum`) VALUES ('How to Train Your Dragon','2010-03-21','2010-04-02','Cinema Star','4400 Theater Company',1111111111111111);
-
 

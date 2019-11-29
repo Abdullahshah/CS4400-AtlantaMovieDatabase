@@ -1,0 +1,33 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+
+<h1>Create Movie</h1>
+
+<form action="{{ url_for('createMovie') }}" name="create_movie_form" method="post">
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" name="movieName" id="movieName" class="form-control" placeholder="" required />
+        </div>
+
+        <div class="form-group">
+            <label for="duration">Duration</label>
+            <input type="number" name="movieDuration" class="form-control" id="movieDuration" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Release Date">Release Date</label>
+            <input type="date" name="movieReleaseDate" class="form-control" id="movieReleaseDate" required />
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <input class="btn btn-primary" type="submit" value="Create Movie" />
+</div>
+</form>
+
+{% endblock %}
