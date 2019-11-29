@@ -1,6 +1,8 @@
 from flask import Flask, render_template, session, url_for, redirect, flash, request
 import os
 import auth
+import view
+import updates
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -151,7 +153,7 @@ def handle_functionality():
 	function_dict = {
 		"Sign Out": "logout",
 		#admin -----
-		"Manage User": "managerUser",
+		"Manage User": "manageUser",
 		"Manage Company": "manageCompany", #createTheater, #companyDetail
 		"Create Movie": "createMovie",
 		#manager ----
@@ -177,7 +179,55 @@ def logout():
 
 @app.route('/admin/manageuser', methods=['POST', 'GET'])
 def manageUser():
-	return redirect(url_for('home'))
+
+	ccnum = {}
+	queryData = view.creditCardCount()
+	for item in queryData:
+		ccnum[item['username']] = item['cnt']
+
+	if request.method == "GET":
+		allUserData = view.getAllUserData()
+		manageUserData = []
+		for user in allUserData:
+			userDict = {}
+			userDict['username'] = user['username']
+			if user['username'] in ccnum:
+				userDict['ccc'] = ccnum[user['username']] #ccc = credit card count
+			else:
+				userDict['ccc'] = 0
+			userDict['usertype'] = user['usertype']
+			userDict['status'] = user['status']
+			manageUserData.append(userDict)
+
+	if request.method == "POST":
+		print(request.form)
+
+		if request.form.get("approveDeclineButtons"):
+			typeStatus = request.form.get("approveDeclineButtons")
+			usernames = request.form.getlist("userChoice")
+			updates.statusChange(usernames, typeStatus)
+			print(typeStatus, "on users:", usernames)
+		usernameFilter = request.form.get("username")
+		statusFilter = request.form.get("status")
+
+		allUserData = view.getAllUserData()
+		manageUserData = []
+		for user in allUserData:
+			if usernameFilter != "" and usernameFilter != user['username']:
+				continue
+			userDict = {}
+			userDict['username'] = user['username']
+			if user['username'] in ccnum:
+				userDict['ccc'] = ccnum[user['username']] #ccc = credit card count
+			else:
+				userDict['ccc'] = 0
+			userDict['usertype'] = user['usertype']
+			if statusFilter != "All" and statusFilter != user['status']:
+				continue
+			userDict['status'] = user['status']
+			manageUserData.append(userDict)
+
+	return render_template("funcs/manage_user.html", manageUserData=manageUserData)
 
 
 @app.route('/admin/managecompany', methods=['GET'])
@@ -223,7 +273,56 @@ def viewHistory():
 
 @app.route('/user/exploretheater', methods=['POST', 'GET'])
 def exploreTheater():
-	return redirect(url_for('home'))
+
+	theaterNames = []
+	companyNames = []
+
+
+	if request.method == "POST":
+		print(request.form)
+		theater_name = request.form.get("theaternamefilter")
+		city = request.form.get("city")
+		company = request.form.get("company")
+		state = request.form.get("state")
+		visitDate = request.form.get("Visit Date")
+		
+		redefinedTheaterData = []
+
+		filtertheaterData = view.filter_theaterdata(theater_name, city, company, state)
+
+		#TODO: Return filtered data
+
+		#TODO: Log visits -> get the radio button data
+
+		return render_template('funcs/explore_theater.html', theaters=redefinedTheaterData,
+				theaterNames=theaterNames, companyNames=companyNames, session=session)
+
+
+
+	if request.method == "GET":
+		theaterData = view.get_theaterdata()
+
+		print(theaterData)
+
+		redefinedTheaterData = []
+
+		for theater in theaterData:
+			d = {}
+			d['Theater'] = theater['thname']
+			d['Address'] = theater['thstreet'] + ', ' + theater['thcity'] + ', ' \
+				+ theater['thstate'] + ' ' + str(theater['thzipcode'])
+			d['Company'] = theater['comname']
+
+			if theater['thname'] not in theaterNames:
+				theaterNames.append(theater['thname'])
+
+			if theater['comname'] not in companyNames:
+				companyNames.append(theater['comname'])
+
+			redefinedTheaterData.append(d)
+
+		return render_template('funcs/explore_theater.html', theaters=redefinedTheaterData,
+				theaterNames=theaterNames, companyNames=companyNames, session=session)
 
 @app.route('/user/visitHistory', methods=['GET'])
 def visitHistory():

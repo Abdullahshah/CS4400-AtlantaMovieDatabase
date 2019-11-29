@@ -13,19 +13,6 @@ def login_user(username, password):
 	return result
 
 
-def get_user(email, pw):
-	connection = util.db_connection()
-
-	try:
-		with connection.cursor() as cursor:
-			get_email = "SELECT user_id, email, name, suspended, is_admin FROM user WHERE email=%s and password=%s"
-			cursor.execute(get_email, (email, pw))
-			result = cursor.fetchone()
-	finally:
-		connection.close()
-
-	return result
-
 def get_typeEmployee(username):
 	connection = util.db_connection()
 

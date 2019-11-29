@@ -1,0 +1,130 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+
+<script>
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("myTable");
+  switching = true;
+  //Set the sorting direction to ascending:
+  dir = "asc"; 
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /*check if the two rows should switch place,
+      based on the direction, asc or desc:*/
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      //Each time a switch is done, increase this count by 1:
+      switchcount ++;      
+    } else {
+      /*If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again.*/
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
+
+<form action="{{ url_for('manageUser') }}" name="manageUserForm" method="post">
+<div class="row">
+	<div class="col-md-6">
+		<h1> Manage User </h1>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" class="form-control"/>
+        </div>
+	</div>
+
+	<div class="col-md-6">
+		<h1> Filters </h1>
+		<label for="status">Status</label>
+		<select name="status">
+			<option value="All"> --All-- </option>
+			<option value="Pending"> Pending </option>
+			<option value="Declined"> Declined </option>
+			<option value="Approved"> Approved </option>
+		</select>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-8">
+        <div class="form-group">
+	        <input class="btn btn-primary" name="filterButton" type="submit" value="Filter"/>
+    	</div>
+    </div>
+
+    <div class="col-md-0">
+        <div class="form-group">
+	        <input class="btn btn-primary" name="approveDeclineButtons" type="submit" value="Approve"/>
+    	</div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+	        <input class="btn btn-primary" name="approveDeclineButtons" type="submit" value="Decline"/>
+    	</div>
+    </div>
+</div>
+
+<div class="row">
+	<table class="table" id="myTable">
+	    <thead>
+	        <tr>
+	            <th onclick="sortTable(0)">Username</th>
+	            <th onclick="sortTable(1)">Credit Card Count</th>
+	            <th onclick="sortTable(2)">User Type</th>
+	            <th onclick="sortTable(3)">Status</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	{% for user in manageUserData %}
+	        <tr>
+	            <td><input type="checkbox" name="userChoice" value="{{ user.username }}"> {{ user.username }} </td>
+	            <td>{{ user.ccc }}</td>
+	            <td>{{ user.usertype }}</td>
+	            <td>{{ user.status }}</td>
+	        </tr>
+	        {% endfor %}
+	    </tbody>
+	</table>
+</div>
+</form>
+
+
+{% endblock %}
