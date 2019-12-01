@@ -2,72 +2,16 @@
 
 {% block content %}
 
-<script>
-function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("myTable");
-  switching = true;
-  //Set the sorting direction to ascending:
-  dir = "asc"; 
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /*check if the two rows should switch place,
-      based on the direction, asc or desc:*/
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      //Each time a switch is done, increase this count by 1:
-      switchcount ++;      
-    } else {
-      /*If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again.*/
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
-</script>
 
-<form action="{{ url_for('exploreTheater') }}" name="exploreTheaterForm" method="post">
+<form action="{{ url_for('exploreMovie') }}" name="exploreMovieForm" method="post">
 <div class="row">
 	<div class="col-md-6">
-		<h1> Explore Theater </h1>
-		<label for="theaterName">Theater Name</label>
-			<select name="theaternamefilter" required="" class="form-group">
+		<h1> Explore Movie </h1>
+		<label for="theaterName">Movie Name</label>
+			<select name="movienamefilter" required="" class="form-group">
 			<option value="All"> --All-- </option>
-			{% for theaterName in theaterNames %}
-			<option value="{{ theaterName.thname }}">{{ theaterName.thname }}</option>
+			{% for movie in allMovies %}
+			<option value="{{ movie.movname }}">{{ movie.movname }}</option>
 			{% endfor %}
 		</select>
 
@@ -80,7 +24,7 @@ function sortTable(n) {
 	<div class="col-md-6">
 		<h1> Filters </h1>
 		<label for="theaterName">Company Names</label>
-			<select name="company" required="">
+		<select name="company" required="">
 			<option value="All"> --All-- </option>
 			{% for companyName in companyNames %}
 			<option value="{{ companyName.comname }}">{{ companyName.comname }}</option>
@@ -145,9 +89,17 @@ function sortTable(n) {
           </select> 
         </div>
 
-        <div class="form-group">
-	        <input class="btn btn-primary" name="filterButton" type="submit" value="Filter"/>
-    	</div>
+	    <div class="col-md-6">
+		    <label for="Movie Play Date">Movie Play Date (Start-End)</label>
+		    <input type="date" name="playDateMin" id="playDateMin" class="form-control" />
+		    <input type="date" name="playDateMax" id="playDateMax" class="form-control" />
+	    </div>
+
+	</div>
+
+
+    <div class="form-group">
+        <input class="btn btn-primary" name="filterButton" type="submit" value="Filter"/>
 	</div>
 </div>
 
@@ -155,31 +107,40 @@ function sortTable(n) {
 	<table class="table" id="myTable">
 	    <thead>
 	        <tr>
-	            <th onclick="sortTable(0)">Theater</th>
-	            <th onclick="sortTable(1)">Address</th>
-	            <th onclick="sortTable(2)">Company</th>
+	            <th>Movie</th>
+	            <th>Theater</th>
+	            <th>Address</th>
+	            <th>Company</th>
+	            <th>Play Date</th>
 	        </tr>
 	    </thead>
 	    <tbody>
-	    	{% for theater in theaters %}
+	    	{% for movie in movieData %}
 	        <tr>
-	            <td><input type="checkbox" name="theaterChoice" value="{{ (theater.Theater, theater.Company) }}"> {{ theater.Theater }} </td>
-	            <td>{{ theater.Address }}</td>
-	            <td>{{ theater.Company }}</td>
+	            <td><input type="checkbox" name="movieChoice" value="{{ (movie.name, movie.playdate, movie.theater, movie.company) }}"> {{ movie.name }} </td>
+	            <td>{{ movie.theater }}</td>
+	            <td>{{ movie.address }}</td>
+	            <td>{{ movie.company }}</td>
+	            <td>{{ movie.playdate }}</td>
 	        </tr>
 	        {% endfor %}
 	    </tbody>
 	</table>
 
 	<div class="col-md-6">
-		<h4> Log a visit </h4>
+		<h4> Watch a Movie </h4>
 	    <div class="form-group">
-	      <label for="Visit Date">Visit Date</label>
-	      <input type="date" name="Visit Date" id="visit_date" class="form-control" placeholder="" />
+			<label for="CreditCards">Credit Cards</label>
+			<select name="creditCard">
+				<option value="---"> --- </option>
+				{% for cc in ccData %}
+				<option value="{{ cc.creditcardnum }}">{{ cc.creditcardnum }}</option>
+				{% endfor %}
+			</select>
 	    </div>
 
 	    <div class="form-group">
-		    <input class="btn btn-primary" name="logVisitButton" type="submit" value="Log Visit"/>
+		    <input class="btn btn-primary" name="watchMovieButton" type="submit" value="View"/>
 	    </div>
 	</div>
 </div>

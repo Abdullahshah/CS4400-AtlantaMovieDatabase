@@ -1,0 +1,139 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+<h1>Create a Theater</h1>
+<p>We need some information in order to create a theater.</p>
+<form action="{{ url_for('createTheater') }}" name="create_theater_form" method="post">
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Theater Information</h3>
+        <div class="row">
+            <div class="form-group col-md-6">
+              <label for="theaterName">Name</label>
+              <input type="text" name="theaterName" id="full-theaterName" class="form-control" value="{{ pageData.theaterName }}" required />
+            </div>
+        </div>
+        <h4>Address</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-9">
+                        <label for="theaterAddress">Street</label>
+                        <input type="text" name="theaterAddress" id="theaterAddress" class="form-control" value="{{ pageData.theaterAddress }}" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="theaterCity">City</label>
+                        <input type="text" name="theaterCity" id="theaterCity" class="form-control" value="{{ pageData.theaterCity }}" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="theaterState">State</label>
+                        <select name="theaterState" required>
+                            {% if pageData %}
+                            <option selected="{{ pageData.theaterState }}"> {{ pageData.theaterState }} </option>
+                            {% endif %}
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="DC">District Of Columbia</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                        </select>           
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="theaterZIP">ZIP Code</label>
+                        <input type="text" name="theaterZIP" id="theaterZIP" maxlength="5" class="form-control" pattern=".{5,5}" title="ZIP Code must have 5 characters" value="{{ pageData.theaterZIP }}" required />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="theaterCapacity">Capacity</label>
+                        <input type="text" name="theaterCapacity" id="theaterCapacity" class="form-control" value="{{ pageData.theaterCapacity }}" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Company Information</h3>
+        <div class="row">
+            <div class="form-group col-md-6">
+              <label for="full-name">Company</label>
+              <select name="companyName">
+                  {% for company in companyNames %}
+                   <option value="{{ company.comname }}"> {{ company.comname }} </option>
+                  {% endfor %}
+              </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" name="loadManagersButton" value="Load Managers"/>
+        </div>
+        {% if managers %}
+        <div class="row">
+            <div class="form-group col-md-6">
+              <label for="companyManager">Managers</label>
+                <select name="selectedManager">
+                  {% for manager in managers %}
+                   <option value="{{ manager.username }}"> {{ manager.name }} </option>
+                  {% endfor %}
+                </select>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="form-group">
+    <input class="btn btn-primary" type="submit" name="createTheaterButton" value="Create Theater" />
+</div>
+</form>
+{% endblock %}

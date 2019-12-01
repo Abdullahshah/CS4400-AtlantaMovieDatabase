@@ -1,0 +1,40 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col-md-12">
+		<h1> View History </h1>
+	</div>
+</div>
+
+<br>
+
+<div class="row">
+	<table class="table" id="myTable">
+	    <thead>
+	        <tr>
+	            <th>Movie</th>
+	            <th>Theater</th>
+	            <th>Company</th>
+	            <th>Credit #</th>
+              	<th>View Date</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	{% for view in viewData %}
+	        <tr>
+	            <td>{{ view.movname }} </td>
+	            <td>{{ view.thname }}</td>
+	            <td>{{ view.comname }}</td>
+	            <td>{{ view.creditcardnum }}</td>
+              	<td>{{ view.movplaydate }}</td>
+	        </tr>
+	        {% endfor %}
+	    </tbody>
+	</table>
+</div>
+
+
+{% endblock %}

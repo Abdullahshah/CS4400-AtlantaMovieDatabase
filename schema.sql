@@ -1,9 +1,11 @@
 DROP DATABASE IF EXISTS team70;
-
 #team70 Schema Creation
-CREATE SCHEMA `team70` ;
+CREATE SCHEMA team70 ;
+
+use team70;
 
 #Users
+drop table if exists users;
 CREATE TABLE `team70`.`users` (
   `username` VARCHAR(45) NOT NULL,
   `firstname` VARCHAR(45) NULL,
@@ -15,23 +17,26 @@ CREATE TABLE `team70`.`users` (
 
 
 #Company:
+drop table if exists company;
 CREATE TABLE `team70`.`company` (
   `comname` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`comname`));
 
 
 #Movie:
+drop table if exists movie;
 CREATE TABLE `team70`.`movie` (
   `movname` VARCHAR(45) NOT NULL,
-  `movreleasedate` DATE NULL,
+  `movreleasedate` DATE NOT NULL,
   `duration` INT NULL,
-  PRIMARY KEY (`movname`),
-  INDEX `movie_idx` (`movname` ASC, `movreleasedate` ASC) VISIBLE)
+  PRIMARY KEY (`movname`, `movreleasedate`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 
+
 #CustomerCreditcard
+drop table if exists customercreditcard;
 CREATE TABLE `team70`.`customercreditcard` (
   `username` VARCHAR(45) NULL,
   `creditcardnum` VARCHAR(16) NOT NULL,
@@ -45,6 +50,7 @@ CREATE TABLE `team70`.`customercreditcard` (
 
 
 #Theater
+drop table if exists theater;
 CREATE TABLE `team70`.`theater` (
   `comname` VARCHAR(45) NOT NULL,
   `thname` VARCHAR(45) NOT NULL,
@@ -65,6 +71,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 #Employee
+drop table if exists employee;
 CREATE TABLE `team70`.`employee` (
   `username` VARCHAR(45) NOT NULL,
   `manstreet` VARCHAR(45) NULL,
@@ -97,7 +104,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 #UserVisitTheater
-
+drop table if exists UserVisittheater;
 CREATE TABLE `team70`.`uservisittheater` (
   `username` VARCHAR(45) NULL,
   `thname` VARCHAR(45) NULL,
@@ -129,6 +136,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 #MoviePlay
+drop table if exists movieplay;
 CREATE TABLE `team70`.`movieplay` (
   `movname` VARCHAR(45) NOT NULL,
   `movreleasedate` DATE NOT NULL,
@@ -153,6 +161,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 #CustomerViewMovie
+drop table if exists customerviewmovie;
 CREATE TABLE `team70`.`customerviewmovie` (
   `movname` VARCHAR(45) NOT NULL,
   `movreleasedate` DATE NOT NULL,

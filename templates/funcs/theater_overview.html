@@ -1,0 +1,83 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+
+
+<form action="{{ url_for('theaterOverview') }}" name="theaterOverviewForm" method="post">
+
+<div class="row">
+	<div class="col-md-6">
+		<h1> Theater Overview </h1>
+        <div class="form-group">
+              <label for="name">Movie Name</label>
+              <input type="text" name="movieName" id="movieName" class="form-control" placeholder="All"/>
+        </div>
+	</div>
+
+  <div class="col-md-6">
+    <h1> Filters </h1>
+    <label for="Movie Duration">Movie Duration</label>
+    <input type="number" name="movieDurationMin" id="movieDurationMin" class="form-control" size="5" placeholder="Min" />
+    <input type="number" name="movieDurationMax" id="movieDurationMax" class="form-control" size="5" placeholder="Max" />
+  </div>
+
+  <div class="col-md-6">
+    <label for="Movie Release Date">Movie Release Date</label>
+    <input type="date" name="movieReleaseStart" id="movieReleaseStart" class="form-control" size="5" placeholder="Start Date" />
+    <input type="date" name="movieReleaseEnd" id="movieReleaseEnd" class="form-control" size="5" placeholder="End Date" />
+  </div>
+
+  <div class="col-md-6">
+    <label for="Movie Play Date">Movie Play Date</label>
+    <input type="date" name="moviePlayStart" id="moviePlayStart" class="form-control" size="5" placeholder="Start Date" />
+    <input type="date" name="moviePlayEnd" id="moviePlayEnd" class="form-control" size="5" placeholder="End Date" />
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+	<div class="col-md-12 offset-md-4">
+      <div class="form-group">
+          <select name="played-notplayedFilter">
+            <option value="All"> ---- </option>
+            <option value="NotPlayedFilter"> Only Include Not Played Movies</option>
+          </select>
+    	</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 offset-md-5">
+      <div class="form-group">
+          <input class="btn btn-primary" name="filterButton" type="submit" value="Filter"/>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+	<table class="table" id="myTable">
+	    <thead>
+	        <tr>
+	            <th>Movie Name</th>
+	            <th>Duration</th>
+	            <th>Release Date</th>
+	            <th>Play Date</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	{% for movie in movieData %}
+	        <tr>
+	            <td>{{ movie.name }} </td>
+	            <td>{{ movie.duration }}</td>
+	            <td>{{ movie.releaseDate }}</td>
+	            <td>{{ movie.playDate }}</td>
+	        </tr>
+	        {% endfor %}
+	    </tbody>
+	</table>
+</div>
+</form>
+
+
+{% endblock %}

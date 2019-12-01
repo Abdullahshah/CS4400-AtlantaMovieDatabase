@@ -4,21 +4,6 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        {% if session['user_id'] %}
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/">My Trips</a>
-          </li>
-            {% if session['is_admin'] == 1 %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
-          </li>
-            {% endif %}
-        </ul>
-        <div class="navbar-nav">
-            <a href="{{ url_for('profile', user_id=session['user_id']) }}" class="nav-item nav-link">Profile</a>
-            <a href="{{ url_for('logout') }}" class="nav-item nav-link">Sign out</a>
-        </div>
-        {% endif %}
+
   </div>
 </nav>

@@ -1,0 +1,66 @@
+{% extends "base/page.html" %}
+
+{% block content %}
+
+
+<form action="{{ url_for('visitHistory') }}" name="visitHistoryForm" method="post">
+
+<div class="row">
+	<div class="col-md-6">
+		<h1> Visit History </h1>
+        <div class="form-group">
+          <label for="theaterName">Company Names</label>
+            <select name="company" required="">
+            <option value="All"> --All-- </option>
+            {% for companyName in companyNames %}
+            <option value="{{ companyName.comname }}">{{ companyName.comname }}</option>
+            {% endfor %}
+          </select>
+        </div>
+	</div>
+
+  <div class="col-md-6">
+    <h1> Filters </h1>
+    <label for="Visit Date">Visit Date (Start-End)</label>
+    <input type="date" name="visitDateMin" id="visitDateMin" class="form-control" />
+    <input type="date" name="visitDateMax" id="visitDateMax" class="form-control" />
+  </div>
+
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-12 offset-md-5">
+      <div class="form-group">
+          <input class="btn btn-primary" name="filterButton" type="submit" value="Filter"/>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+	<table class="table" id="myTable">
+	    <thead>
+	        <tr>
+	            <th>Theater</th>
+	            <th>Address</th>
+	            <th>Company</th>
+	            <th>Visit Date</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	{% for view in viewData %}
+	        <tr>
+	            <td>{{ view.thname }} </td>
+	            <td>{{ view.thstreet }}</td>
+	            <td>{{ view.comname }}</td>
+	            <td>{{ view.visitdate }}</td>
+	        </tr>
+	        {% endfor %}
+	    </tbody>
+	</table>
+</div>
+</form>
+
+
+{% endblock %}
