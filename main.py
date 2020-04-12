@@ -122,9 +122,13 @@ def handle_registration():
 		address_state = request.form.get("address_state")
 		address_zip = request.form.get("address_zip")
 
-		if auth.createNewManager(username, first_name, last_name, password, usertype, status, company,
-			 address_street, address_city, address_state, address_zip, theaterName="NULL"):
-			print("Manager created!")
+		if not view.checkAddressExists(address_street, address_city, address_state, address_zip):
+			if auth.createNewManager(username, first_name, last_name, password, usertype, status, company,
+				 address_street, address_city, address_state, address_zip, theaterName="NULL"):
+				print("Manager created!")
+		else:
+			flash("Address already exists")
+			redirect(url_for('home'))
 	else:
 		usertype = "Employee, Customer"
 		status = "Approved"
@@ -136,9 +140,13 @@ def handle_registration():
 
 		creditCards = request.form.getlist("creditcard")
 
-		if auth.createNewManagerCustomer(username, first_name, last_name, password, usertype, status, company, address_street,
-		address_city, address_state, address_zip, creditCards, theaterName="NULL"):
-			print("Manager-Customer created!")
+		if not view.checkAddressExists(address_street, address_city, address_state, address_zip):
+			if auth.createNewManagerCustomer(username, first_name, last_name, password, usertype, status, company, address_street,
+			address_city, address_state, address_zip, creditCards, theaterName="NULL"):
+				print("Manager-Customer created!")
+		else:
+			flash("Address already exists")
+			redirect(url_for('home'))
 
 	# after registration works
 	session['usertype'] = reg_type
@@ -278,7 +286,6 @@ def manageCompany():
 				managerNameData = view.getManagersforCompany(companyChoice)
 				for manager in managerNameData:
 					managerNames += manager['firstname'] + ' ' + manager['lastname'] + ', '
-				managerNames = managerNames[:-2]
 
 				theaterData = []
 				theaterQueryData = view.getWorkingManagersforCompany(companyChoice)
@@ -385,7 +392,7 @@ def createTheater():
 
 		if request.form.get("createTheaterButton"):
 			companyName = request.form.get("companyName")
-			theaterName = request.form.get("manageCompanytheaterName")
+			theaterName = request.form.get("theaterName")
 			theaterCapacity = request.form.get("theaterCapacity")
 			theaterAddress = request.form.get("theaterAddress")
 			theaterCity = request.form.get("theaterCity")
@@ -548,7 +555,7 @@ def scheduleMovie():
 			if x['movname'] == selectedMovieName:
 				scheduledReleasedDate = x['movreleasedate']
 
-		if datetime.datetime.strptime(selectedPlayDate, '%Y-%m-%d').date() <=  scheduledReleasedDate:
+		if datetime.datetime.strptime(selectedPlayDate, '%Y-%m-%d').date() <  scheduledReleasedDate:
 			flash("Can not schedule movie before release date")
 		else:
 			print(session['user_data'])

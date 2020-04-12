@@ -395,3 +395,15 @@ def getManagers():
 		connection.close()
 
 	return result
+
+def checkAddressExists(street, city, state, zipcode):
+	connection = util.db_connection()
+	try:
+		with connection.cursor() as cursor:
+			checkAddressExists = "select * from employee where manstreet=%s and mancity=%s and manstate=%s and manzipcode=%s"
+			cursor.execute(checkAddressExists, (street, city, state, zipcode))
+			result = cursor.fetchone()
+	finally:
+		connection.close()
+
+	return result
