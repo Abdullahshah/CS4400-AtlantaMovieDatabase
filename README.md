@@ -1,7 +1,9 @@
 # CSTeam70-AtlantaMovieDatabase
 
 
-yeet
+yeeeeet
+
+EER, IFD and Project Outline in the "Project Details" Folder.
 
 
 To Create SQL users run these commands:
